@@ -16,6 +16,16 @@ class JWTService {
     return jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: expiryTime });
   }
 
+  // verify Access Token
+  static verifyAccessToken(token) {
+    return jwt.verify(token, ACCESS_TOKEN_SECRET);
+  }
+
+  // verify Refresh Token
+  static verifyRefreshToken(token) {
+    return jwt.verify(token, REFRESH_TOKEN_SECRET);
+  }
+
   //store refresh token
   static async storeRefreshToken(token, userId) {
     try {

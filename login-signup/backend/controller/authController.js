@@ -232,6 +232,83 @@ const authController = {
     // 2. response
     res.status(200).json({ user: null, auth: false });
   }, // Logout
+
+  // **********************************************
+  // Refresh Token
+  // **********************************************
+  async refresh(re, res, next) {
+    // 1. get refreshToken from cookies
+    // 2. verify refreshToken
+    // 3. generate new tokens
+    // 4. update db, return response
+
+    // 1. get refreshToken from cookies
+    const originalRefreshToken = req.cookies.refreshToken;
+
+    // 2. verify refreshToken
+    let id;
+
+    try {
+      id = JWTService.verifyRefreshToken(originalRefreshToken)._id;
+    } catch (e) {
+      const error = {
+        status: 401,
+        message: "Unauthorized",
+      };
+
+      return next(error);
+    }
+
+    try {
+      const match = await RefreshToken.findOne({
+        _id: id,
+        token: originalRefreshToken,
+      });
+
+      if (!match) {
+        const error = {
+          status: 401,
+          message: "Unauthorized",
+        };
+
+        return next(error);
+      }
+    } catch (e) {
+      return next(e);
+    }
+
+    try {
+      // 3. generate new tokens
+      const accessToken = JWTService.signAccessToken({ _id: user._id }, "30m");
+      const refreshToken = JWTService.signRefreshToken(
+        { _id: user._id },
+        "60m"
+      );
+
+      // 4. update db, return response
+      await RefreshToken.updateOne({ _id: id }, { token: refreshToken });
+
+      //adding cookies to response
+      res.cookie("accessToken", accessToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+    } catch (error) {
+      return next(e);
+    }
+
+    //finding the user from db
+    const user = await User.findOne({ _id: id });
+
+    const userDto = new UserDTO(user);
+
+    return res.status(200).json({ user: userDto, auth: true });
+  }, //refresh
 }; //authController
 
 module.exports = authController;
