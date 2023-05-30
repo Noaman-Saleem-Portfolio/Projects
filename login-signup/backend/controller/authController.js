@@ -216,7 +216,7 @@ const authController = {
     const { refreshToken } = req.body;
 
     try {
-      // deleteOne returns { acknowledged: true, deletedCount: 0 }
+      // deleteOne returns {  acknowledged: true, deletedCount: 0 }
       const deletedToken = await RefreshToken.deleteOne({
         token: refreshToken,
       });
@@ -236,7 +236,8 @@ const authController = {
   // **********************************************
   // Refresh Token
   // **********************************************
-  async refresh(re, res, next) {
+  async refresh(req, res, next) {
+    // try {
     // 1. get refreshToken from cookies
     // 2. verify refreshToken
     // 3. generate new tokens
@@ -299,7 +300,7 @@ const authController = {
         httpOnly: true,
       });
     } catch (error) {
-      return next(e);
+      return next(error);
     }
 
     //finding the user from db
@@ -308,6 +309,10 @@ const authController = {
     const userDto = new UserDTO(user);
 
     return res.status(200).json({ user: userDto, auth: true });
+    // } catch (error) {
+    //   console.log(`Reftresh bahir ali error`);
+    //   return next(error);
+    // }
   }, //refresh
 }; //authController
 
