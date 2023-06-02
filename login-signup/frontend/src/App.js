@@ -9,11 +9,20 @@ import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Protected from "./components/Protected/Protected";
+import useAutoLogin from "./hooks/useAutoLogin";
+import Loader from "./components/Loader/Loader";
+import Error from "./pages/Error/Error";
+
+import "./App.css";
 
 function App() {
   const isAuth = useSelector((state) => state.user.auth);
 
-  return (
+  const loading = useAutoLogin();
+
+  return loading ? (
+    <Loader text="..." />
+  ) : (
     <BrowserRouter>
       <MenuBar />
       <Routes>
@@ -32,7 +41,14 @@ function App() {
 
         <Route path="/signup" element={<Signup />} />
 
-        {/* <Route path="*" element={<Error />} /> */}
+        <Route
+          path="*"
+          element={
+            <div className="main">
+              <Error />
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
