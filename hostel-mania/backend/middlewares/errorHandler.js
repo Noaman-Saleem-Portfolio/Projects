@@ -25,6 +25,8 @@ const errorHandler = (error, req, res, next) => {
     data.message = error.message;
   }
 
+  // console.log(`data = ${data.message}`);
+
   return res.status(status).json(data);
 };
 

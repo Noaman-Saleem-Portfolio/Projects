@@ -30,7 +30,11 @@ function MenuBar() {
   return (
     <Navbar collapseOnSelect expand="lg" className="navbar-styles">
       <Container>
-        <Navbar.Brand as={NavLink} to="/">
+        <Navbar.Brand
+          as={NavLink}
+          to="/"
+          style={{ color: "#00a551", fontWeight: "bold" }}
+        >
           HostelMania
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

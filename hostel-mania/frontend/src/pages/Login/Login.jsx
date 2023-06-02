@@ -36,9 +36,13 @@ const Login = () => {
       // 2. redirect -> homepage
       navigate("/profile");
     } else if (response.code === "ERR_BAD_REQUEST") {
+      console.log(`BAD REQUEST`);
+      console.log(response);
       //display error message
       setError(response.response.data.message);
     } else {
+      console.log(`network error`);
+      console.log(response);
       // Incase of any other network error
       // display error message
       setError(response.message);

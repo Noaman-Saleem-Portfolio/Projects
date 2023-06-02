@@ -168,6 +168,7 @@ const authController = {
           status: 401,
           message: "Invalid username/password",
         };
+        // console.log(`Password does not verify`);
 
         return next(error);
       }
@@ -237,6 +238,7 @@ const authController = {
   // Refresh Token
   // **********************************************
   async refresh(req, res, next) {
+    // console.log(`calling refresh`);
     // try {
     // 1. get refreshToken from cookies
     // 2. verify refreshToken
