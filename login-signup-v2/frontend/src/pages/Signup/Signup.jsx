@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { setUser } from "../../store/userSlice";
-import { signup } from "../../api/internal";
+import { signup } from "../../api/auth";
 import TextInput from "../../components/TextInput/TextInput";
 import signupSchema from "../../schemas/signupSchema";
 import Button from "react-bootstrap/Button";

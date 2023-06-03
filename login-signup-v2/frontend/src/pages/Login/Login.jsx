@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import TextInput from "../../components/TextInput/TextInput";
 import { useFormik } from "formik";
 import loginSchema from "../../schemas/loginSchema";
-import { login } from "../../api/internal";
+import { login } from "../../api/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
 import { useNavigate } from "react-router-dom";
