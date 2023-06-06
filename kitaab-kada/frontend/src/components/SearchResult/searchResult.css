@@ -1,0 +1,163 @@
+/* Search filter sidebar */
+/* ******************************************* */
+/* ******************************************* */
+/* ******************************************* */
+.search-result {
+    margin-top: 80px;
+}
+
+.search-result .selected-box .selected {
+    display: flex;
+    /* color: red; */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-result .selected-box .selected p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #008575;
+}
+
+.search-result .selected-box .selected p:hover {
+    border-bottom: 1px solid #008575;
+}
+
+.search-result .selected-box hr {
+    margin: 0px;
+}
+
+.search-result .filters-box {
+    margin-top: 20px;
+}
+
+.search-result .filters-box .filters p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #008575;
+}
+
+.search-result .filters-box .filters p:hover {
+    border-bottom: 1px solid #008575;
+}
+
+.search-result .filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* #root > div > div > div.col-md-4 > div.filters-box > hr */
+#root>div>div>div.col-md-4>div.filters-box>hr {
+    /* color: red; */
+    margin: 0px;
+}
+
+.search-result .filters-box .items-box .item {
+    margin: 15px 0px;
+}
+
+.search-result .filters-box .items-box .item .checkbox input {
+    margin-right: 15px;
+}
+
+
+/* Search Result Section */
+/* ******************************************* */
+/* ******************************************* */
+/* ******************************************* */
+
+.search-result .selected-box .items {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.search-result .selected-box .items .item {
+    background-color: #efefef;
+    color: #707070;
+    padding: 3px;
+    width: 35%;
+    /* text-align: center; */
+    margin: 6px 0px;
+    position: relative;
+}
+
+.search-result .selected-box .items .item span {
+    position: absolute;
+    /* top: 0; */
+    right: 8px;
+    bottom: 3px;
+    font-size: 17px;
+    color: #008575;
+    font-weight: bold;
+}
+
+.search-result .selected-box .items .item span:hover {
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+    color: #008575;
+}
+
+.search-result .book-search-results span.by {
+    font-weight: normal;
+}
+
+.search-result .book-search-results span.dollar {
+    font-size: 10px;
+}
+
+.search-result .book-search-results .book-card {
+    position: relative;
+    /* background-color: #008575; */
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-bottom: 30px;
+}
+
+.search-result .book-search-results .book-card h6 span.by {
+    color: grey;
+}
+
+.search-result .book-search-results .book-card h6 {
+    color: #008575;
+}
+
+.search-result .book-search-results .price span.dollar {
+    position: absolute;
+    bottom: 97px;
+    left: 15px;
+    font-size: 20px;
+    color: #a31023;
+}
+
+.search-result .book-search-results p.price {
+    padding-left: 12px;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #a31023;
+}
+
+.search-result .book-search-results p.catagory {
+    font-size: 12px;
+    padding: 5px;
+    padding-top: 0px;
+}
+
+.search-result .book-search-results .book-card button {
+    background-color: #ffcc33;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    color: #363636;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 100%;
+    margin-top: 3px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
