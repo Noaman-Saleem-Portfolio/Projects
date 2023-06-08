@@ -8,7 +8,7 @@ import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import AddHostel from "./pages/AddHostel/AddHostel";
+import AddHotel from "./pages/AddHotel/AddHotel";
 import Protected from "./components/Protected/Protected";
 import useAutoLogin from "./hooks/useAutoLogin";
 import Loader from "./components/Loader/Loader";
@@ -42,7 +42,7 @@ function App() {
           path="/add-hotel"
           element={
             <Protected isAuth={isAuth}>
-              <AddHostel />
+              <AddHotel />
             </Protected>
           }
         />
