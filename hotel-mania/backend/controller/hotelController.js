@@ -1,4 +1,4 @@
-const hostelController = {
+const hotelController = {
   // **********************************************
   // create hostel
   // **********************************************
@@ -40,4 +40,4 @@ const hostelController = {
   },
 }; // hostelController
 
-module.exports = hostelController;
+module.exports = hotelController;

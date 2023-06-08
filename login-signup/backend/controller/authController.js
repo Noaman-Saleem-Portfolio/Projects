@@ -213,7 +213,7 @@ const authController = {
   // **********************************************
   async logout(req, res, next) {
     // 1. delete refresh token from db
-    const { refreshToken } = req.body;
+    const { refreshToken } = req.cookies;
 
     try {
       // deleteOne returns {  acknowledged: true, deletedCount: 0 }
@@ -280,11 +280,8 @@ const authController = {
 
     try {
       // 3. generate new tokens
-      const accessToken = JWTService.signAccessToken({ _id: user._id }, "30m");
-      const refreshToken = JWTService.signRefreshToken(
-        { _id: user._id },
-        "60m"
-      );
+      const accessToken = JWTService.signAccessToken({ _id: id }, "30m");
+      const refreshToken = JWTService.signRefreshToken({ _id: id }, "60m");
 
       // 4. update db, return response
       await RefreshToken.updateOne({ _id: id }, { token: refreshToken });
