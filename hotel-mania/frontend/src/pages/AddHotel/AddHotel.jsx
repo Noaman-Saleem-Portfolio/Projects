@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
@@ -12,8 +12,56 @@ import Form from "react-bootstrap/Form";
 import "./AddHotel.css";
 
 const AddHotel = () => {
+  const imageMimeType = /image\/(png|jpg|jpeg)/i;
+
+  const [file, setFile] = useState(null);
+  const [fileDataURL, setFileDataURL] = useState(null);
+
+  const changeHandler = (e) => {
+    const file = e.target.files[0];
+    if (!file.type.match(imageMimeType)) {
+      alert("Image mime type is not valid");
+      return;
+    }
+    setFile(file);
+  };
+
+  // const changeHandler = (e) => {
+  //   const { files } = e.target;
+  //   // console.log(`files :`);
+  //   // console.log(files);
+  //   for (let i = 0; i < files.length; i++) {
+  //     // console.log(files[i]);
+  //     const file = files[i]; // OR const file = files.item(i);
+  //   }
+  // };
+
+  useEffect(() => {
+    let fileReader,
+      isCancel = false;
+    if (file) {
+      fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        const { result } = e.target;
+        // console.log(`onload result :`);
+        // console.log(result);
+        if (result && !isCancel) {
+          setFileDataURL(result);
+        }
+      };
+      fileReader.readAsDataURL(file);
+    }
+    return () => {
+      isCancel = true;
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort();
+      }
+    };
+  }, [file]);
+
   const handleSubmit = () => {
     console.log(values);
+    console.log(fileDataURL);
   };
 
   const { values, touched, handleBlur, handleChange, errors } = useFormik({
@@ -25,7 +73,7 @@ const AddHotel = () => {
       province: "",
       country: "",
       description: "",
-      totalRooms: 0,
+      totalRooms: "",
     },
 
     validationSchema: hotelSchema,
@@ -142,15 +190,58 @@ const AddHotel = () => {
         value={values.totalRooms}
         onChange={handleChange}
         onBlur={handleBlur}
-        placeholder="totalRooms"
+        placeholder="Total Rooms"
         error={errors.totalRooms && touched.totalRooms ? 1 : undefined}
         errormessage={errors.totalRooms}
       />
 
-      <Form.Group controlId="formFileMultiple" className="mb-3">
-        <Form.Label>Select Multiple Images</Form.Label>
-        <Form.Control type="file" multiple />
+      <TextInput
+        as="textarea"
+        rows={3}
+        name="description"
+        value={values.description}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder="Description"
+        error={errors.description && touched.description ? 1 : undefined}
+        errormessage={errors.description}
+      />
+
+      <Form.Group controlId="formFile" className="mb-3">
+        <Form.Label>Default file input example</Form.Label>
+        <Form.Control
+          type="file"
+          accept=".png, .jpg, .jpeg"
+          onChange={changeHandler}
+        />
       </Form.Group>
+
+      {/* <p>
+        <label htmlFor="file">Upload images</label>
+        <input
+          type="file"
+          id="file"
+          onChange={changeHandler}
+          accept="image/*"
+          multiple
+        />
+      </p> */}
+
+      {/* <p>
+        <label htmlFor="image"> Browse images </label>
+        <input
+          type="file"
+          id="image"
+          accept=".png, .jpg, .jpeg"
+          onChange={changeHandler}
+        />
+      </p> */}
+
+      {fileDataURL ? (
+        <p className="img-preview-wrapper">
+          {<img src={fileDataURL} alt="preview" />}
+        </p>
+      ) : null}
 
       <div className="d-grid gap-2">
         <Button variant="primary" size="lg" onClick={handleSubmit}>

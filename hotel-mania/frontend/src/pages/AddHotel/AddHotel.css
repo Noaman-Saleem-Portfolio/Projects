@@ -1,19 +1,19 @@
 .hotelDataWrapper {
-    margin: 0 auto;
-    width: 30vw;
+  margin: 0 auto;
+  width: 50vw;
 }
 
 .hotelDataHeader {
-    font-size: 38px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 40px;
+  font-size: 38px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 40px;
 }
 
 .errorMessage {
-    color: #ea3943;
-    margin: 8px 0;
-    font-size: 15px;
-    font-weight: bold;
+  color: #ea3943;
+  margin: 8px 0;
+  font-size: 15px;
+  font-weight: bold;
 }

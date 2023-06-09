@@ -36,7 +36,7 @@ const hotelController = {
   // **********************************************
 
   async delete(req, res, next) {
-    res.send(`deleted hostel in DB!`);
+    res.send(`deleted hostel in DB!!`);
   },
 }; // hostelController
 
