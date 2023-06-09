@@ -38,7 +38,7 @@ const Signup = () => {
       };
       dispatch(setUser(user));
 
-      //redirect to Profile Page
+      //redirect to Home Page
       navigate("/");
     } else if (response.code === "ERR_BAD_REQUEST") {
       // display error message

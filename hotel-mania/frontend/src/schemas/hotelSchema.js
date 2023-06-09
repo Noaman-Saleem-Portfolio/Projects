@@ -9,8 +9,8 @@ const hotelSchema = yup.object().shape({
   location: yup.string().max(500).required("Location is required"),
   province: yup.string().required("Province is required"),
   country: yup.string().max(30).required("Country is required"),
-  description: yup.string().max(1000),
-  totalRooms: yup.number().required(),
+  description: yup.string().max(1000).required(),
+  totalRooms: yup.string().required(),
 });
 
 export default hotelSchema;

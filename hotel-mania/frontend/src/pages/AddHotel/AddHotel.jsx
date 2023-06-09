@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
-import { setUser } from "../../store/userSlice";
-import { signup } from "../../api/auth";
+import { submitHotel } from "../../api/auth";
 import TextInput from "../../components/TextInput/TextInput";
 import hotelSchema from "../../schemas/hotelSchema";
 import Button from "react-bootstrap/Button";
@@ -12,6 +10,8 @@ import Form from "react-bootstrap/Form";
 import "./AddHotel.css";
 
 const AddHotel = () => {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
   const [file, setFile] = useState(null);
@@ -59,9 +59,36 @@ const AddHotel = () => {
     };
   }, [file]);
 
-  const handleSubmit = () => {
-    console.log(values);
-    console.log(fileDataURL);
+  const handleSubmit = async () => {
+    // console.log(values);
+    // console.log(fileDataURL);
+    const data = {
+      name: values.name,
+      city: values.city,
+      address: values.address,
+      location: values.location,
+      province: values.province,
+      country: values.country,
+      description: values.description,
+      totalRooms: values.totalRooms,
+      photo: fileDataURL,
+    };
+
+    console.log(`calling create hotel API`);
+    const response = await submitHotel(data);
+
+    console.log(response);
+
+    if (response.status === 201) {
+      //redirect to Home Page
+      navigate("/");
+    } else if (response.code === "ERR_BAD_REQUEST") {
+      // display error message
+      setError(response.response.data.message);
+    } else {
+      // display error message
+      setError(response.message);
+    }
   };
 
   const { values, touched, handleBlur, handleChange, errors } = useFormik({
@@ -185,7 +212,7 @@ const AddHotel = () => {
       /> */}
 
       <TextInput
-        type="number"
+        type="text"
         name="totalRooms"
         value={values.totalRooms}
         onChange={handleChange}
@@ -248,6 +275,8 @@ const AddHotel = () => {
           Submit Hotel
         </Button>
       </div>
+
+      {error !== "" ? <p className="errorMessage">{error}</p> : ""}
     </div>
   );
 };

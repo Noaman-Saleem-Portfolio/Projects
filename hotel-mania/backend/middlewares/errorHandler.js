@@ -14,7 +14,7 @@ const errorHandler = (error, req, res, next) => {
     //     401 Unauthorized
     // Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.
 
-    // console.log(`Validation Error == ${error}`);
+    console.log(`Validation Error == ${error}`);
     // console.log(error);
     if (
       error.details[0].message === '"confirmPassword" must be [ref:password]'

@@ -29,3 +29,20 @@ export const login = async (data) => {
   }
   return response;
 };
+
+//==================================
+// Hotels
+//==================================
+
+//submit hotel
+export const submitHotel = async (data) => {
+  let response;
+
+  try {
+    response = await api.post("/hotel/new", data);
+  } catch (error) {
+    return error;
+  }
+
+  return response;
+};

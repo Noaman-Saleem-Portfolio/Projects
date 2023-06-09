@@ -18,6 +18,23 @@ export const signout = async () => {
   return response;
 };
 
+// //==================================
+// // Hotels
+// //==================================
+
+// //submit hotel
+// export const submitHotel = async (data) => {
+//   let response;
+
+//   try {
+//     response = await api.post("/hotel/new", data);
+//   } catch (error) {
+//     return error;
+//   }
+
+//   return response;
+// };
+
 // auto token refresh
 // /protected-resource -> 401
 // /refresh -> authenthicated state
@@ -32,7 +49,7 @@ api.interceptors.response.use(
   },
   async (error) => {
     // console.log(error);
-    // console.log(`I am interceptor error`);
+    console.log(`I am interceptor error`);
     const originalReq = error.config;
 
     if (
@@ -43,7 +60,7 @@ api.interceptors.response.use(
       originalReq.isRetry = true;
 
       try {
-        // console.log(`Requesting refresh token`);
+        console.log(`Requesting refresh token`);
         await axios.get(`${process.env.REACT_APP_INTERNAL_API_PATH}/refresh`, {
           withCredentials: true,
         });

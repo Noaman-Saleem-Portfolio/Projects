@@ -260,7 +260,7 @@ const authController = {
         status: 401,
         message: "Unauthorized",
       };
-
+      console.log(`Refresh verification error`);
       return next(error);
     }
 
@@ -275,6 +275,7 @@ const authController = {
           status: 401,
           message: "Unauthorized",
         };
+        console.log(`Refresh token not in DB error`);
 
         return next(error);
       }
@@ -301,6 +302,7 @@ const authController = {
         httpOnly: true,
       });
     } catch (error) {
+      console.log(`Refresh sign token error`);
       return next(error);
     }
 
