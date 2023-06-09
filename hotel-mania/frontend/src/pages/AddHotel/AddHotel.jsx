@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { submitHotel } from "../../api/auth";
 import TextInput from "../../components/TextInput/TextInput";
@@ -10,6 +11,7 @@ import Form from "react-bootstrap/Form";
 import "./AddHotel.css";
 
 const AddHotel = () => {
+  const author = useSelector((state) => state.user._id);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
@@ -72,6 +74,7 @@ const AddHotel = () => {
       description: values.description,
       totalRooms: values.totalRooms,
       photo: fileDataURL,
+      author,
     };
 
     console.log(`calling create hotel API`);

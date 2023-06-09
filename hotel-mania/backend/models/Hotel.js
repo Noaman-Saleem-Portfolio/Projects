@@ -13,6 +13,7 @@ const hotelSchema = Schema(
     country: { type: String, required: true },
     description: { type: String, required: true },
     totalRooms: { type: String, required: true },
+    author: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

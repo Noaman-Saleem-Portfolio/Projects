@@ -2,6 +2,8 @@ const Joi = require("joi");
 const fs = require("fs");
 const Hotel = require("../models/Hotel");
 
+const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
+
 const hotelController = {
   // **********************************************
   // create hostel
@@ -18,6 +20,7 @@ const hotelController = {
     // client side -> base64 encoded string -> decode -> store -> save photo's path in db
 
     const createHotelSchema = Joi.object({
+      author: Joi.string().regex(mongodbIdPattern).required(),
       name: Joi.string().required(),
       city: Joi.string().required(),
       address: Joi.string().required(),
@@ -46,6 +49,7 @@ const hotelController = {
       description,
       totalRooms,
       photo,
+      author,
     } = req.body;
 
     // read as buffer
@@ -55,8 +59,8 @@ const hotelController = {
     );
 
     // allot a random name
-    // const imagePath = `${Date.now()}-${author}.png`;
-    const imagePath = `${Date.now()}-${name}.png`;
+    const imagePath = `${Date.now()}-${author}.png`;
+    // const imagePath = `${Date.now()}-${name}.png`;
 
     // // save to cloudinary
     // let response;
@@ -67,39 +71,40 @@ const hotelController = {
         `storage/images/hotel/${imagePath}`,
         buffer
       );
-      console.log(`pathReturned`);
-      console.log(`${pathReturned}`);
+      // console.log(`pathReturned`);
+      // console.log(`${pathReturned}`);
     } catch (error) {
       return next(error);
     }
 
-    // // save hotel in db
-    // let newHotel;
-    // try {
-    //   newHotel = new Hotel({
-    //     name,
-    //     city,
-    //     address,
-    //     location,
-    //     province,
-    //     country,
-    //     description,
-    //     totalRooms,
-    //     photoPath: `storage/${imagePath}`,
-    //   });
+    // save hotel in db
+    let newHotel;
+    try {
+      newHotel = new Hotel({
+        name,
+        city,
+        address,
+        location,
+        province,
+        country,
+        description,
+        totalRooms,
+        photoPath: `storage/${imagePath}`,
+        author,
+      });
 
-    //   await newHotel.save();
-    // } catch (error) {
-    //   return next(error);
-    // }
+      await newHotel.save();
+    } catch (error) {
+      return next(error);
+    }
 
     // // const blogDto = new BlogDTO(newBlog);
 
     // // return res.status(201).json({ blog: blogDto });
     // //
     // console.log(photoPath);
-    //
-    res.json({ msg: "New Hotel created" });
+    ////
+    res.status(201).json({ msg: "New Hotel created", hotel: newHotel });
   },
 
   // **********************************************
