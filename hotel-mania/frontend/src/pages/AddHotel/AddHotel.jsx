@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
-import { submitHotel } from "../../api/auth";
+import { submitHotel } from "../../api/internal";
 import TextInput from "../../components/TextInput/TextInput";
 import hotelSchema from "../../schemas/hotelSchema";
 import Button from "react-bootstrap/Button";

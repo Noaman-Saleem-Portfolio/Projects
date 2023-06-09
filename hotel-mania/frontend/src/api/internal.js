@@ -22,18 +22,18 @@ export const signout = async () => {
 // // Hotels
 // //==================================
 
-// //submit hotel
-// export const submitHotel = async (data) => {
-//   let response;
+//submit hotel
+export const submitHotel = async (data) => {
+  let response;
 
-//   try {
-//     response = await api.post("/hotel/new", data);
-//   } catch (error) {
-//     return error;
-//   }
+  try {
+    response = await api.post("/hotel/new", data);
+  } catch (error) {
+    return error;
+  }
 
-//   return response;
-// };
+  return response;
+};
 
 // auto token refresh
 // /protected-resource -> 401
@@ -69,6 +69,11 @@ api.interceptors.response.use(
       } catch (error) {
         return error;
       }
+    }
+
+    // 400 Bad Request : Invalid argument (invalid request payload)
+    if (error.response.status === 400) {
+      return error;
     }
   }
 );

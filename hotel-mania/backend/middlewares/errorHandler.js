@@ -20,13 +20,13 @@ const errorHandler = (error, req, res, next) => {
       error.details[0].message === '"confirmPassword" must be [ref:password]'
     ) {
       // console.log(`Confirm Password error!!!`);
-      status = 401;
+      status = 400;
       data.message = "Confirm Password field must match the password field";
 
       return res.status(status).json(data);
     } else {
       // console.log(`All other errors!!!!`);
-      status = 401;
+      status = 400;
       data.message = error.message;
 
       return res.status(status).json(data);
