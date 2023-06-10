@@ -48,6 +48,19 @@ export const getAllHotels = async () => {
   return response;
 };
 
+// get hotel by Id
+export const getHotelById = async (id) => {
+  let response;
+
+  try {
+    response = await api.get(`/hotel/${id}`);
+  } catch (error) {
+    return error;
+  }
+
+  return response;
+};
+
 // auto token refresh
 // /protected-resource -> 401
 // /refresh -> authenthicated state

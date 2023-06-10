@@ -32,6 +32,10 @@ const SearchHotel = () => {
     return setHotels([]);
   }, []);
 
+  const handleClick = (id) => {
+    navigate(`/hotel/${id}`);
+  };
+
   if (loading) {
     return <Loader text="Hotels" />;
   }
@@ -49,7 +53,11 @@ const SearchHotel = () => {
       <Container>
         <Row>
           {hotels.map((hotel) => (
-            <Col md={12}>
+            <Col
+              md={12}
+              onClick={() => handleClick(hotel._id)}
+              style={{ cursor: "pointer" }}
+            >
               {/* <img
                 src={`${process.env.REACT_APP_INTERNAL_API_PATH}/${hotel.photoPath}`}
                 alt="Hotel "

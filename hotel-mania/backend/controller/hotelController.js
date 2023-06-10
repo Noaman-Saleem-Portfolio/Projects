@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const fs = require("fs");
 const Hotel = require("../models/Hotel");
+const HotelDetailsDTO = require("../dto/hotelDetails");
 
 const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
 
@@ -133,7 +134,32 @@ const hotelController = {
   // **********************************************
 
   async getById(req, res, next) {
-    res.send(`Specific Hostel read from DB!`);
+    // validate id
+    // response
+
+    const getByIdSchema = Joi.object({
+      id: Joi.string().regex(mongodbIdPattern).required(),
+    });
+
+    const { error } = getByIdSchema.validate(req.params);
+
+    if (error) {
+      return next(error);
+    }
+
+    let hotel;
+
+    const { id } = req.params;
+
+    try {
+      hotel = await Hotel.findOne({ _id: id }).populate("author");
+    } catch (error) {
+      return next(error);
+    }
+
+    const hotelDto = new HotelDetailsDTO(hotel);
+
+    res.status(200).json({ hotel: hotelDto });
   },
 
   // **********************************************
