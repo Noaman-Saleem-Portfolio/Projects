@@ -53,5 +53,10 @@ api.interceptors.response.use(
         return error;
       }
     }
+
+    // 400 Bad Request : Invalid argument (invalid request payload)
+    if (error.response.status === 400) {
+      return error;
+    }
   }
 );

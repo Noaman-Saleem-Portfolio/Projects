@@ -158,7 +158,7 @@ const hotelController = {
     }
 
     const hotelDto = new HotelDetailsDTO(hotel);
-
+    //
     res.status(200).json({ hotel: hotelDto });
   },
 
@@ -167,7 +167,7 @@ const hotelController = {
   // **********************************************
 
   async update(req, res, next) {
-    res.send(`updated hostel in DB!`);
+    res.status(200).json({ msg: `updated hostel in DB!` });
   },
 
   // **********************************************

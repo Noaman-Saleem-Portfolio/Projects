@@ -150,7 +150,7 @@ const authController = {
         const error = {
           //           401 Unauthorized
           // Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.
-          status: 401,
+          status: 400,
           message: "Invalid username/password",
         };
 
@@ -165,7 +165,7 @@ const authController = {
       if (!match) {
         const error = {
           //           401 Unauthorized
-          status: 401,
+          status: 400,
           message: "Invalid username/password",
         };
         // console.log(`Password does not verify`);

@@ -17,6 +17,7 @@ import Error from "./pages/Error/Error";
 // import "./App.css";
 import SearchHotel from "./pages/SearchHotel/SearchHotel";
 import HotelDetails from "./pages/HotelDetails/HotelDetails";
+import UpdateHotel from "./pages/UpdateHotel/UpdateHotel";
 
 function App() {
   const isAuth = useSelector((state) => state.user.auth);
@@ -47,6 +48,15 @@ function App() {
           element={
             <Protected isAuth={isAuth}>
               <AddHotel />
+            </Protected>
+          }
+        />
+
+        <Route
+          path="/hotel-update/:id"
+          element={
+            <Protected isAuth={isAuth}>
+              <UpdateHotel />
             </Protected>
           }
         />

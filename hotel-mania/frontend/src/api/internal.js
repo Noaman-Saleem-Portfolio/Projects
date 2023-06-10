@@ -61,6 +61,19 @@ export const getHotelById = async (id) => {
   return response;
 };
 
+// update hotel by Id
+export const updateHotel = async (data) => {
+  let response;
+
+  try {
+    response = await api.put(`/hotel`, data);
+  } catch (error) {
+    return error;
+  }
+
+  return response;
+};
+
 // auto token refresh
 // /protected-resource -> 401
 // /refresh -> authenthicated state

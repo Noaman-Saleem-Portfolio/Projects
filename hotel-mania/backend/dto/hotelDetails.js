@@ -1,7 +1,7 @@
 class HotelDetailsDTO {
   constructor(hotel) {
     this._id = hotel._id;
-    this._address = hotel.address;
+    this.address = hotel.address;
     this.city = hotel.city;
     this.country = hotel.country;
     this.createdAt = hotel.createdAt;

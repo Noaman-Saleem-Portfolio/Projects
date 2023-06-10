@@ -18,7 +18,7 @@ const SearchHotel = () => {
     const getAllHotelsApiCall = async () => {
       const response = await getAllHotels();
 
-      console.log(response);
+      // console.log(response);
 
       if (response.status === 200) {
         setHotels(response.data.hotels);
