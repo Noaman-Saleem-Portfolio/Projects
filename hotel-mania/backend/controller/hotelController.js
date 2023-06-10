@@ -89,7 +89,7 @@ const hotelController = {
         country,
         description,
         totalRooms,
-        photoPath: `storage/${imagePath}`,
+        photoPath: `storage/images/hotel/${imagePath}`,
         author,
       });
 
@@ -110,9 +110,22 @@ const hotelController = {
   // **********************************************
   // get all
   // **********************************************
-
+  //
   async getAll(req, res, next) {
-    res.send(`All Hostels read from DB!`);
+    try {
+      const hotels = await Hotel.find({});
+
+      // const blogsDto = [];
+
+      // for (let i = 0; i < blogs.length; i++) {
+      //   const dto = new BlogDTO(blogs[i]);
+      //   blogsDto.push(dto);
+      // }
+
+      return res.status(200).json({ hotels });
+    } catch (error) {
+      return next(error);
+    }
   },
 
   // **********************************************

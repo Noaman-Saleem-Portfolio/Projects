@@ -14,7 +14,8 @@ import useAutoLogin from "./hooks/useAutoLogin";
 import Loader from "./components/Loader/Loader";
 import Error from "./pages/Error/Error";
 
-import "./App.css";
+// import "./App.css";
+import SearchHotel from "./pages/SearchHotel/SearchHotel";
 
 function App() {
   const isAuth = useSelector((state) => state.user.auth);
@@ -34,6 +35,15 @@ function App() {
           element={
             <Protected isAuth={isAuth}>
               <Profile />
+            </Protected>
+          }
+        />
+
+        <Route
+          path="/hotels/search"
+          element={
+            <Protected isAuth={isAuth}>
+              <SearchHotel />
             </Protected>
           }
         />

@@ -35,6 +35,19 @@ export const submitHotel = async (data) => {
   return response;
 };
 
+// get all hotels
+export const getAllHotels = async () => {
+  let response;
+
+  try {
+    response = await api.get("/hotel/all");
+  } catch (error) {
+    return error;
+  }
+
+  return response;
+};
+
 // auto token refresh
 // /protected-resource -> 401
 // /refresh -> authenthicated state
