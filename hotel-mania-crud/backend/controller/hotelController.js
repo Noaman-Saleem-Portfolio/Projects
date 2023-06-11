@@ -179,19 +179,9 @@ const hotelController = {
       country: Joi.string().required(),
       description: Joi.string().required(),
       totalRooms: Joi.string().required(),
-      photo: Joi.string().allow(""),
+      photo: Joi.string().required(),
     });
 
-    // const {
-    //   name,
-    //   city,
-    //   address,
-    //   location,
-    //   province,
-    //   country,
-    //   description,
-    //   totalRooms,
-    // } = req.body;
     const { error } = createHotelSchema.validate(req.body);
 
     if (error) {
@@ -229,7 +219,7 @@ const hotelController = {
       //
       // console.log(previousPhoto);
       previousPhoto = previousPhoto.split("/").at(-1);
-      // //console.log(previousPhoto);
+      // console.log(previousPhoto);
 
       // delete photo
       fs.unlinkSync(`storage//images/hotel/${previousPhoto}`);

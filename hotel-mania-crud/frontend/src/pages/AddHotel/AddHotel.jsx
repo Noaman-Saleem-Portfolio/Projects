@@ -17,7 +17,7 @@ const AddHotel = () => {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState("");
+  const [fileDataURL, setFileDataURL] = useState(null);
 
   const changeHandler = (e) => {
     const file = e.target.files[0];

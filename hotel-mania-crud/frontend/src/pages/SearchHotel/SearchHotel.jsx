@@ -7,7 +7,6 @@ import { Container } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
-import Pagination from "../../components/Pagination/Pagination";
 
 const SearchHotel = () => {
   const navigate = useNavigate();
@@ -86,10 +85,7 @@ const SearchHotel = () => {
           ))}
         </Row>
       </Container>
-      <h1>Haaaaaaaaaaaaaaaaaaaaaaa</h1>
-      <Pagination />
     </div>
-    // outer most div
   );
 };
 

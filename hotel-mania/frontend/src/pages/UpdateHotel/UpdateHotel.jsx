@@ -21,7 +21,7 @@ const UpdateHotel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(null);
+  const [fileDataURL, setFileDataURL] = useState("");
   const hotelId = params.id;
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
 

@@ -1,23 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useFormik } from "formik";
-import { submitHotel } from "../../api/internal";
+import Loader from "../../components/Loader/Loader";
+import { useNavigate, useParams } from "react-router-dom";
 import TextInput from "../../components/TextInput/TextInput";
-import hotelSchema from "../../schemas/hotelSchema";
+import { getHotelById, updateHotel } from "../../api/internal";
+import { useFormik } from "formik";
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import hotelSchema from "../../schemas/hotelSchema";
 
-import "./AddHotel.css";
-
-const AddHotel = () => {
-  const author = useSelector((state) => state.user._id);
+const UpdateHotel = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const imageMimeType = /image\/(png|jpg|jpeg)/i;
+  const params = useParams();
 
+  //   const logedInUserId = useSelector((state) => state.user._id);
+  const author = useSelector((state) => state.user._id);
+
+  const [hotel, setHotel] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState("");
+  const [fileDataURL, setFileDataURL] = useState(null);
+  const hotelId = params.id;
+  const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
   const changeHandler = (e) => {
     const file = e.target.files[0];
@@ -28,15 +34,33 @@ const AddHotel = () => {
     setFile(file);
   };
 
-  // const changeHandler = (e) => {
-  //   const { files } = e.target;
-  //   // console.log(`files :`);
-  //   // console.log(files);
-  //   for (let i = 0; i < files.length; i++) {
-  //     // console.log(files[i]);
-  //     const file = files[i]; // OR const file = files.item(i);
-  //   }
-  // };
+  useEffect(() => {
+    const getHotelDetails = async () => {
+      const hotelResponse = await getHotelById(hotelId);
+      console.log(hotelResponse);
+
+      if (hotelResponse.status === 200) {
+        setHotel(hotelResponse.data.hotel);
+
+        setLoading(false);
+
+        // console.log(
+        //   `${hotelResponse.data.hotel.author.userId} === ${logedInUserId}`
+        // );
+        // console.log(hotelResponse.data.hotel.author.userId === logedInUserId);
+      } else if (hotelResponse.code === "ERR_BAD_REQUEST") {
+        // display error message
+        setError(hotelResponse.response.data.message);
+        setLoading(false);
+      } else {
+        // display error message
+        setError(hotelResponse.message);
+        setLoading(false);
+      }
+    };
+
+    getHotelDetails();
+  }, []);
 
   useEffect(() => {
     let fileReader,
@@ -61,7 +85,7 @@ const AddHotel = () => {
     };
   }, [file]);
 
-  const handleSubmit = async () => {
+  const handleUpdate = async () => {
     // console.log(values);
     // console.log(fileDataURL);
     const data = {
@@ -75,14 +99,17 @@ const AddHotel = () => {
       totalRooms: values.totalRooms,
       photo: fileDataURL,
       author,
+      hotelId: hotel._id,
     };
 
-    console.log(`calling create hotel API`);
-    const response = await submitHotel(data);
+    console.log(`calling update hotel API`);
+    console.log(data);
+    const response = await updateHotel(data);
 
     console.log(response);
 
-    if (response.status === 201) {
+    // HTTP 204 should imply "resource updated successfully"
+    if (response.status === 204) {
       //redirect to Home Page
       navigate("/");
     } else if (response.code === "ERR_BAD_REQUEST") {
@@ -96,18 +123,31 @@ const AddHotel = () => {
 
   const { values, touched, handleBlur, handleChange, errors } = useFormik({
     initialValues: {
-      name: "",
-      city: "",
-      address: "",
-      location: "",
-      province: "",
-      country: "",
-      description: "",
-      totalRooms: "",
+      name: hotel?.name,
+      address: hotel?.address,
+      city: hotel?.city,
+      location: hotel?.location,
+      province: hotel?.province,
+      country: hotel?.country,
+      description: hotel?.description,
+      totalRooms: hotel?.totalRooms,
     },
-
+    enableReinitialize: true,
     validationSchema: hotelSchema,
   });
+
+  if (loading) {
+    return <Loader text="Hotel" />;
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <h4>{error}</h4>
+      </Container>
+    );
+  }
+
   return (
     <div className="hotelDataWrapper">
       <div className="hotelDataHeader">Add New Hotel</div>
@@ -274,7 +314,7 @@ const AddHotel = () => {
       ) : null}
 
       <div className="d-grid gap-2">
-        <Button variant="primary" size="lg" onClick={handleSubmit}>
+        <Button variant="primary" size="lg" onClick={handleUpdate}>
           Submit Hotel
         </Button>
       </div>
@@ -284,4 +324,4 @@ const AddHotel = () => {
   );
 };
 
-export default AddHotel;
+export default UpdateHotel;
