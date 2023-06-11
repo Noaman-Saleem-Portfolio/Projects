@@ -74,6 +74,19 @@ export const updateHotel = async (data) => {
   return response;
 };
 
+// delete hotel
+export const deleteHotel = async (id) => {
+  let response;
+
+  try {
+    response = await api.delete(`/hotel/${id}`);
+  } catch (error) {
+    return error;
+  }
+
+  return response;
+};
+
 // auto token refresh
 // /protected-resource -> 401
 // /refresh -> authenthicated state

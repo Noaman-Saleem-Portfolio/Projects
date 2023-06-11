@@ -184,6 +184,11 @@ const hotelController = {
 
     const { error } = createHotelSchema.validate(req.body);
 
+    if (error) {
+      console.log(`Validation error`);
+      return next(error);
+    }
+
     const {
       author,
       hotelId,
@@ -281,7 +286,34 @@ const hotelController = {
   // **********************************************
 
   async delete(req, res, next) {
-    res.send(`deleted hostel in DB!!`);
+    // validate id
+    // delete hotel
+    // delete comments on this hotel
+
+    const deleteHotelSchema = Joi.object({
+      id: Joi.string().regex(mongodbIdPattern).required(),
+    });
+
+    const { error } = deleteHotelSchema.validate(req.params);
+
+    if (error) {
+      console.log(`Validation error`);
+      return next(error);
+    }
+
+    const { id } = req.params;
+
+    // delete hotel
+    // delete comments
+    try {
+      await Hotel.deleteOne({ _id: id });
+
+      // await Comment.deleteMany({ blog: id });
+    } catch (error) {
+      return next(error);
+    }
+
+    return res.status(200).json({ msg: "hotel deleted" });
   },
 }; // hostelController
 

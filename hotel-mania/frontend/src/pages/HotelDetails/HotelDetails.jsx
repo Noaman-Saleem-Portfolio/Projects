@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getHotelById } from "../../api/internal";
+import { deleteHotel, getHotelById } from "../../api/internal";
 import { Button, Container } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,6 +16,7 @@ const HotelDetails = () => {
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deleteError, setDeleteError] = useState(false);
 
   const params = useParams();
   const hotelId = params.id;
@@ -51,6 +52,21 @@ const HotelDetails = () => {
     navigate(`/hotel-update/${hotel._id}`);
   };
 
+  const handleDelete = async () => {
+    const response = await deleteHotel(hotel._id);
+    console.log(response);
+
+    if (response.status === 200) {
+      navigate("/");
+    } else if (response.code === "ERR_BAD_REQUEST") {
+      // display error message
+      setDeleteError(response.response.data.message);
+    } else {
+      // display error message
+      setDeleteError(response.message);
+    }
+  };
+
   if (loading) {
     return <Loader text="Hotel" />;
   }
@@ -81,6 +97,7 @@ const HotelDetails = () => {
             />
             <h4>{hotel.name}</h4>
             <p>{hotel.description}</p>
+
             {hotel.author.userId === logedInUserId ? (
               <Button variant="warning" onClick={goToUpdate}>
                 Update
@@ -88,6 +105,16 @@ const HotelDetails = () => {
             ) : (
               ""
             )}
+
+            {hotel.author.userId === logedInUserId ? (
+              <Button variant="danger" onClick={handleDelete}>
+                Delete
+              </Button>
+            ) : (
+              ""
+            )}
+
+            {deleteError ? <p style={{ color: "red" }}>{deleteError}</p> : ""}
             <hr />
           </Col>
         </Row>

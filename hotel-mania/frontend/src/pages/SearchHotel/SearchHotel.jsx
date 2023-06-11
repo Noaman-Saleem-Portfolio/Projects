@@ -13,18 +13,26 @@ const SearchHotel = () => {
 
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const getAllHotelsApiCall = async () => {
       const response = await getAllHotels();
 
-      // console.log(response);
+      console.log(response);
 
       if (response.status === 200) {
         setHotels(response.data.hotels);
+        setLoading(false);
+      } else if (response.code === "ERR_BAD_REQUEST") {
+        // display error message
+        setError(response.response.data.message);
+        setLoading(false);
+      } else {
+        // display error message
+        setError(response.message);
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     getAllHotelsApiCall();
@@ -44,6 +52,7 @@ const SearchHotel = () => {
     return (
       <Container>
         <h5>Zero Hotel available to display</h5>
+        {error ? <p style={{ color: "red" }}>{error}</p> : ""}
       </Container>
     );
   }

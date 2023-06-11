@@ -36,25 +36,25 @@ const UpdateHotel = () => {
 
   useEffect(() => {
     const getHotelDetails = async () => {
-      const blogResponse = await getHotelById(hotelId);
-      console.log(blogResponse);
+      const hotelResponse = await getHotelById(hotelId);
+      console.log(hotelResponse);
 
-      if (blogResponse.status === 200) {
-        setHotel(blogResponse.data.hotel);
+      if (hotelResponse.status === 200) {
+        setHotel(hotelResponse.data.hotel);
 
         setLoading(false);
 
         // console.log(
-        //   `${blogResponse.data.hotel.author.userId} === ${logedInUserId}`
+        //   `${hotelResponse.data.hotel.author.userId} === ${logedInUserId}`
         // );
-        // console.log(blogResponse.data.hotel.author.userId === logedInUserId);
-      } else if (blogResponse.code === "ERR_BAD_REQUEST") {
+        // console.log(hotelResponse.data.hotel.author.userId === logedInUserId);
+      } else if (hotelResponse.code === "ERR_BAD_REQUEST") {
         // display error message
-        setError(blogResponse.response.data.message);
+        setError(hotelResponse.response.data.message);
         setLoading(false);
       } else {
         // display error message
-        setError(blogResponse.message);
+        setError(hotelResponse.message);
         setLoading(false);
       }
     };
@@ -108,6 +108,7 @@ const UpdateHotel = () => {
 
     console.log(response);
 
+    // HTTP 204 should imply "resource updated successfully"
     if (response.status === 204) {
       //redirect to Home Page
       navigate("/");
