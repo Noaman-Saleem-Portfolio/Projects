@@ -7,7 +7,7 @@ const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
 
 const hotelController = {
   // **********************************************
-  // create hostel
+  // create hotel
   // **********************************************
 
   async create(req, res, next) {
@@ -163,11 +163,117 @@ const hotelController = {
   },
 
   // **********************************************
-  // update hostel
+  // update hotel
   // **********************************************
 
   async update(req, res, next) {
-    res.status(200).json({ msg: `updated hostel in DB!` });
+    //validate
+    const createHotelSchema = Joi.object({
+      author: Joi.string().regex(mongodbIdPattern).required(),
+      hotelId: Joi.string().regex(mongodbIdPattern).required(),
+      name: Joi.string().required(),
+      city: Joi.string().required(),
+      address: Joi.string().required(),
+      location: Joi.string().required(),
+      province: Joi.string().required(),
+      country: Joi.string().required(),
+      description: Joi.string().required(),
+      totalRooms: Joi.string().required(),
+      photo: Joi.string().required(),
+    });
+
+    const { error } = createHotelSchema.validate(req.body);
+
+    const {
+      author,
+      hotelId,
+      name,
+      city,
+      address,
+      location,
+      province,
+      country,
+      description,
+      totalRooms,
+      photo,
+    } = req.body;
+
+    // delete previous photo
+    // save new photo
+
+    let hotel;
+
+    try {
+      hotel = await Hotel.findOne({ _id: hotelId });
+    } catch (error) {
+      return next(error);
+    }
+
+    if (photo) {
+      let previousPhoto = hotel.photoPath;
+      //
+      // console.log(previousPhoto);
+      previousPhoto = previousPhoto.split("/").at(-1);
+      // console.log(previousPhoto);
+
+      // delete photo
+      fs.unlinkSync(`storage//images/hotel/${previousPhoto}`);
+
+      // read as buffer
+      const buffer = Buffer.from(
+        photo.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""),
+        "base64"
+      );
+
+      // allot a random name
+      const imagePath = `${Date.now()}-${author}.png`;
+      // const imagePath = `${Date.now()}-${name}.png`;
+
+      // // save to cloudinary
+      // let response;
+
+      try {
+        // response = await cloudinary.uploader.upload(photo);
+        const pathReturned = fs.writeFileSync(
+          `storage/images/hotel/${imagePath}`,
+          buffer
+        );
+      } catch (error) {
+        return next(error);
+      }
+
+      await Hotel.updateOne(
+        { _id: hotelId },
+        {
+          name,
+          city,
+          address,
+          location,
+          province,
+          country,
+          description,
+          totalRooms,
+          photoPath: `storage/images/hotel/${imagePath}`,
+        }
+      );
+    } else {
+      await Hotel.updateOne(
+        { _id: hotelId },
+        {
+          name,
+          city,
+          address,
+          location,
+          province,
+          country,
+          description,
+          totalRooms,
+        }
+      );
+    }
+
+    // HTTP 204 should imply "resource updated successfully"
+    res.status(204).json({ msg: `updated hostel in DB!` });
   },
 
   // **********************************************

@@ -108,16 +108,16 @@ const UpdateHotel = () => {
 
     console.log(response);
 
-    // if (response.status === 201) {
-    //   //redirect to Home Page
-    //   navigate("/");
-    // } else if (response.code === "ERR_BAD_REQUEST") {
-    //   // display error message
-    //   setError(response.response.data.message);
-    // } else {
-    //   // display error message
-    //   setError(response.message);
-    // }
+    if (response.status === 204) {
+      //redirect to Home Page
+      navigate("/");
+    } else if (response.code === "ERR_BAD_REQUEST") {
+      // display error message
+      setError(response.response.data.message);
+    } else {
+      // display error message
+      setError(response.message);
+    }
   };
 
   const { values, touched, handleBlur, handleChange, errors } = useFormik({
