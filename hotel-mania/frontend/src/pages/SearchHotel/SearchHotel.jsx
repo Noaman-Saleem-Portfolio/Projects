@@ -12,18 +12,31 @@ import Pagination from "../../components/Pagination/Pagination";
 const SearchHotel = () => {
   const navigate = useNavigate();
 
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [limit, setLimit] = useState(10);
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const getAllHotelsApiCall = async () => {
-      const response = await getAllHotels();
+      setLoading(true);
+      setError(false);
+
+      const response = await getAllHotels(limit, page);
 
       console.log(response);
 
       if (response.status === 200) {
         setHotels(response.data.hotels);
+        setPages(response.data.pages);
+        setLoading(false);
+      } else if (response.status === 404) {
+        // display error message
+        console.log(`404 error`);
+        console.log(response);
+        setError(response.data.message);
         setLoading(false);
       } else if (response.code === "ERR_BAD_REQUEST") {
         // display error message
@@ -39,7 +52,7 @@ const SearchHotel = () => {
     getAllHotelsApiCall();
 
     return setHotels([]);
-  }, []);
+  }, [page]);
 
   const handleClick = (id) => {
     navigate(`/hotel/${id}`);
@@ -86,8 +99,7 @@ const SearchHotel = () => {
           ))}
         </Row>
       </Container>
-      <h1>Haaaaaaaaaaaaaaaaaaaaaaa</h1>
-      <Pagination />
+      <Pagination page={page} pages={pages} setPage={setPage} />
     </div>
     // outer most div
   );

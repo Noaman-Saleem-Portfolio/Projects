@@ -4,11 +4,7 @@ import { useState } from "react";
 
 import "./Pagination.css";
 
-const Pagination = () => {
-  const [page, setPage] = useState(1);
-  const [pages, setPages] = useState(1);
-  const dispatch = useDispatch();
-
+const Pagination = ({ page, pages, setPage }) => {
   // const {
   //   data: books,
   //   status,

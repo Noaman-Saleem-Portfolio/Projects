@@ -36,11 +36,22 @@ export const submitHotel = async (data) => {
 };
 
 // get all hotels
-export const getAllHotels = async () => {
+export const getAllHotels = async (limit, page) => {
   let response;
 
+  let queryString = `/hotel/all?`;
+
+  if (limit) {
+    queryString = queryString + `limit=${limit}`;
+  }
+
+  if (page) {
+    queryString = queryString + `&page=${page}`;
+  }
+
+  console.log(queryString);
   try {
-    response = await api.get("/hotel/all");
+    response = await api.get(queryString);
   } catch (error) {
     return error;
   }

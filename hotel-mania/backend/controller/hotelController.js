@@ -113,8 +113,51 @@ const hotelController = {
   // **********************************************
   //
   async getAll(req, res, next) {
+    let query;
+    //
+    console.log(req.query);
+
+    // Copy req.query
+    const reqQuery = { ...req.query };
+
+    // Fields to exclude
+    const removeFields = ["select", "sort", "page", "limit"];
+
+    // Loop over removeFields and delete them from reqQuery
+    removeFields.forEach((param) => delete reqQuery[param]);
+
+    // Finding resource...
+    query = Hotel.find(reqQuery);
+
+    // const totalDocuments = await Hotel.find(query).countDocuments();
+    const totalDocuments = await Hotel.countDocuments();
+
+    console.log("totalDocuments : ", totalDocuments);
+
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.limit) || 4;
+    const skip = (page - 1) * pageSize;
+
+    let pages = 1;
+
+    //Avoiding 0/0 in mathematics
+    if (totalDocuments !== 0) {
+      pages = Math.ceil(totalDocuments / pageSize);
+    }
+
+    console.log("Pages : ", pages);
+
+    query = query.skip(skip).limit(pageSize);
+
+    if (page > pages) {
+      return res.status(404).json({
+        success: false,
+        message: "No page found",
+      });
+    }
+
     try {
-      const hotels = await Hotel.find({});
+      const hotels = await query;
 
       // const blogsDto = [];
 
@@ -123,7 +166,7 @@ const hotelController = {
       //   blogsDto.push(dto);
       // }
 
-      return res.status(200).json({ hotels });
+      return res.status(200).json({ hotels, pages });
     } catch (error) {
       return next(error);
     }
@@ -158,7 +201,7 @@ const hotelController = {
     }
 
     const hotelDto = new HotelDetailsDTO(hotel);
-    //
+
     res.status(200).json({ hotel: hotelDto });
   },
 
